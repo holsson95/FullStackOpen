@@ -1,24 +1,35 @@
 import { useState } from 'react'
 const Name = (props) => (
-  <div>
+  <div key = {props.id}>
     {props.name}
   </div>
 )
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
+  console.log(persons)
   
+
   const addName = (event) => {
     event.preventDefault()
+
     const nameObject = {
       content: newName,
       id: persons.length + 1
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    console.log(nameObject.id)
+
+    const existingPerson = persons.find(
+      (person) => person.content.toLowerCase() === newName.toLowerCase()
+    )
+   
+    if (existingPerson) {
+      window.alert(`${newName} is already added to phonebook`)
+      setNewName('')
+      
+    } else {
+        setPersons(persons.concat(nameObject))
+        setNewName('')        
+    }
   }
 
   const handleNameChange = (event) => {
@@ -26,10 +37,11 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+  
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addName} >
         <div>
           name: <input value = {newName} onChange={handleNameChange}/>
         </div>
@@ -38,11 +50,11 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-        <div>
+       
           {persons.map(person =>
             <Name key={person.id} name ={person.content} />
             )}
-        </div>
+       
     </div>
   )
 }
