@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import Filter from './components/filter.js'
+import PersonForm from './components/personForm.js'
+import Persons from './components/persons.js'
+
 const Name = (props) => (
   <div key = {props.id}>
     {props.name} {props.number}
@@ -55,21 +59,20 @@ const App = () => {
   }
 
   const showAll = persons.filter(person => person.name.toLowerCase().match(filterName.toLowerCase()))
-  
+  const displayNames = showAll.map(person => <p key = {person.id}> 
+    {person.name} {person.number} </p>)
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>Filter by name: <input value = {filterName} onChange={handleNameFilter} /></div>
+      <Filter value ={filterName} onChange={handleNameFilter} />
       <h3>Add a Name</h3>
-      <form onSubmit={addName} >
-        <div> name: <input value = {newName} onChange={handleNameChange} /> </div>
-        <div> number: <input value = {newNum} onChange={handleNumberChange} /> </div>
-        <div> <button type="submit">add</button> </div>
-      </form>
+      <PersonForm onSubmit={addName} 
+      name = {{value: newName, onChange: handleNameChange}}
+      number = {{value: newNum, onChange: handleNumberChange}}/>
+        
       <h3>Numbers</h3>
-          {showAll.map(person =>
-            <Name key={person.id} name ={person.name} number = {person.number} />
-            )}
+          <Persons persons = {displayNames} />
     </div>
   )
 }
