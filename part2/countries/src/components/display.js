@@ -1,25 +1,19 @@
 import React from 'react';
-import Country from './country';
 
-const Display = ({countryList, setCountries}) => {
-    console.log(countryList.length)
-    if(countryList.length>10 && countryList.length<250) {
-        return (
-        <div>Too many, please refine your search</div>
-        )
-    } else if(countryList.length<=10 && countryList.length>2 || countryList.length===0){
+const Display = ({countriesToShow, handleClick}) => {
+    if(countriesToShow.length<=10){
         return ( 
             <div>
-                {countryList.map(
+                {countriesToShow.map(
                     (country, i) => <div key = {i}>
-                    {country.name.common} <button onClick={()=>setCountries([country])}>Show</button>
+                    {country.name.common} <button onClick={handleClick}>Show</button>
                 </div>
                 )}
             </div>
             )
     } else {
         return(
-            <Country country = {countryList[0]} />
+            <p>Too many countries please specify your search</p>
         )
     } 
 }
